@@ -42,10 +42,15 @@ function love.draw()
     -- crosshairs
     love.graphics.draw(sprites.crosshairs, love.mouse.getX() - 20, love.mouse.getY() - 20)
 
-    -- score
+    -- score and timer
     love.graphics.setFont(gameFont)
-    love.graphics.print(score, 10, 10)
-    love.graphics.print(math.ceil(timer), 300, 10)
+    love.graphics.print("Score: " .. score, 10, 10)
+    love.graphics.print("Time: " .. math.ceil(timer), 300, 10)
+
+    -- main menu message
+    if gameState == MAIN_MENU then
+        love.graphics.printf("Click anywhere to begin!", 0, 250, love.graphics.getWidth(), "center")
+    end
 
     -- fps counter
     love.graphics.setFont(fpsFont)
