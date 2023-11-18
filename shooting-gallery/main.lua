@@ -1,3 +1,6 @@
+MAIN_MENU = 1
+IN_GAME = 2
+
 function love.load()
     target = {}
     target.x = 300
@@ -5,7 +8,8 @@ function love.load()
     target.radius = 50
 
     score = 0
-    timer = 10
+    timer = 0
+    gameState = MAIN_MENU
 
     fpsFont = love.graphics.getFont()
     gameFont = love.graphics.newFont(40)
@@ -22,6 +26,7 @@ function love.update(dt)
     timer = timer - dt
     if timer < 0 then
         timer = 0
+        gameState = MAIN_MENU
     end
 end
 
@@ -30,7 +35,9 @@ function love.draw()
     love.graphics.draw(sprites.sky, 0, 0)
 
     -- target
-    love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
+    if gameState == IN_GAME then
+        love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
+    end
 
     -- crosshairs
     love.graphics.draw(sprites.crosshairs, love.mouse.getX() - 20, love.mouse.getY() - 20)
@@ -47,10 +54,16 @@ end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
-        if dist(x, y, target.x, target.y) < target.radius then
-            score = score + 1
-            target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
-            target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)
+        if gameState == MAIN_MENU then
+            gameState = IN_GAME
+            timer = 10
+            score = 0
+        elseif gameState == IN_GAME then
+            if dist(x, y, target.x, target.y) < target.radius then
+                score = score + 1
+                target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
+                target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)
+            end
         end
     end
 end
