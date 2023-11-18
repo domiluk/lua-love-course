@@ -9,6 +9,13 @@ function love.load()
 
     fpsFont = love.graphics.getFont()
     gameFont = love.graphics.newFont(40)
+
+    sprites = {}
+    sprites.sky = love.graphics.newImage("sprites/sky.png")
+    sprites.target = love.graphics.newImage("sprites/target.png")
+    sprites.crosshairs = love.graphics.newImage("sprites/crosshairs.png")
+
+    love.mouse.setVisible(false)
 end
 
 function love.update(dt)
@@ -19,18 +26,21 @@ function love.update(dt)
 end
 
 function love.draw()
+    -- background
+    love.graphics.draw(sprites.sky, 0, 0)
+
     -- target
-    love.graphics.setColor(1, 0, 0)
-    love.graphics.circle("fill", target.x, target.y, target.radius)
+    love.graphics.draw(sprites.target, target.x - target.radius, target.y - target.radius)
+
+    -- crosshairs
+    love.graphics.draw(sprites.crosshairs, love.mouse.getX() - 20, love.mouse.getY() - 20)
 
     -- score
-    love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(gameFont)
     love.graphics.print(score, 10, 10)
     love.graphics.print(math.ceil(timer), 300, 10)
 
-    -- fps
-    love.graphics.setColor(1, 1, 1)
+    -- fps counter
     love.graphics.setFont(fpsFont)
     love.graphics.print(love.timer.getFPS())
 end

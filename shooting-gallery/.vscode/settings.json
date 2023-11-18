@@ -6,6 +6,7 @@
         "timer",
         "gameFont",
         "fpsFont",
-        "dist"
+        "dist",
+        "sprites"
     ]
 }
