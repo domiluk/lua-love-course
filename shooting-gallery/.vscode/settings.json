@@ -1,3 +1,11 @@
 {
-    "Lua.diagnostics.globals": ["love"]
+    "Lua.diagnostics.globals": [
+        "love",
+        "target",
+        "score",
+        "timer",
+        "gameFont",
+        "fpsFont",
+        "dist"
+    ]
 }

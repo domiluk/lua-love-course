@@ -1,25 +1,43 @@
 function love.load()
+    target = {}
+    target.x = 300
+    target.y = 300
+    target.radius = 50
+
+    score = 0
+    timer = 0
+
+    fpsFont = love.graphics.getFont()
+    gameFont = love.graphics.newFont(40)
 end
 
 function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.setBlendMode("alpha")
-    love.graphics.setColor(0.9, 0.6, 0.5)
-    love.graphics.rectangle("line", 100, 50, 150, 100)
-    love.graphics.rectangle("fill", 200, 200, 200, 200)
-    love.graphics.rectangle("fill", 300, 300, 200, 200)
+    -- target
+    love.graphics.setColor(1, 0, 0)
+    love.graphics.circle("fill", target.x, target.y, target.radius)
 
-    love.graphics.setBlendMode("add")
-    love.graphics.setColor(1, 0, 0, 0.9)
-    love.graphics.circle("fill", 500, 360, 100)
-    love.graphics.setColor(0, 1, 0, 0.9)
-    love.graphics.circle("fill", 450, 450, 100)
-    love.graphics.setColor(0, 0, 1, 0.9)
-    love.graphics.circle("fill", 550, 450, 100)
-
-    love.graphics.setBlendMode("alpha")
+    -- score
     love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(gameFont)
+    love.graphics.print(score, 10, 10)
+
+    -- fps
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(fpsFont)
     love.graphics.print(love.timer.getFPS())
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        if dist(x, y, target.x, target.y) < target.radius then
+            score = score + 1
+        end
+    end
+end
+
+function dist(x1, y1, x2, y2)
+    return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
 end
