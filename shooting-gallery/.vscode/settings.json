@@ -8,6 +8,8 @@
         "fpsFont",
         "dist",
         "sprites",
-        "gameState"
+        "gameState",
+        "withinTheTarget",
+        "moveTheTarget"
     ]
 }

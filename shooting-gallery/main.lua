@@ -1,6 +1,9 @@
 MAIN_MENU = 1
 IN_GAME = 2
 
+LMB = 1
+RMB = 2
+
 function love.load()
     target = {}
     target.x = 300
@@ -58,25 +61,39 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
-    if button == 1 then
+    if button == LMB then
         if gameState == MAIN_MENU then
             gameState = IN_GAME
             timer = 10
             score = 0
         elseif gameState == IN_GAME then
-            if dist(x, y, target.x, target.y) < target.radius then
+            if withinTheTarget(x, y) then
                 score = score + 1
-                target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
-                target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)
+                moveTheTarget()
             else
                 if score > 0 then
                     score = score - 1
                 end
             end
         end
+    elseif button == RMB then
+        if gameState == IN_GAME and withinTheTarget(x, y) then
+            score = score + 2
+            timer = timer - 1
+            moveTheTarget()
+        end
     end
 end
 
 function dist(x1, y1, x2, y2)
     return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
+end
+
+function withinTheTarget(x, y)
+    return dist(x, y, target.x, target.y) < target.radius
+end
+
+function moveTheTarget()
+    target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
+    target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)
 end
