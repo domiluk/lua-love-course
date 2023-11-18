@@ -1,0 +1,15 @@
+{
+    "Lua.diagnostics.globals": [
+        "love",
+        "target",
+        "score",
+        "timer",
+        "gameFont",
+        "fpsFont",
+        "dist",
+        "sprites",
+        "gameState",
+        "withinTheTarget",
+        "moveTheTarget"
+    ]
+}
