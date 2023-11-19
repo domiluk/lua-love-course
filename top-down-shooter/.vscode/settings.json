@@ -3,8 +3,9 @@
         "love",
         "sprites",
         "player",
-        "playerMouseAngle",
+        "playerFacingMouseAngle",
         "zombies",
-        "spawnZombie"
+        "spawnZombie",
+        "zombieFacingPlayerAngle"
     ]
 }
