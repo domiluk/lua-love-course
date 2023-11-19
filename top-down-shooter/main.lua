@@ -9,11 +9,15 @@ function love.load()
     player.x = love.graphics.getWidth() / 2
     player.y = love.graphics.getHeight() / 2
     player.speed = 180
+
+    zombies = {}
 end
 
 function love.keypressed(key)
-    if key == 'escape' then
+    if key == "escape" then
         love.event.quit()
+    elseif key == "space" then
+        spawnZombie()
     end
 end
 
@@ -37,8 +41,20 @@ function love.draw()
 
     love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), nil, nil,
         sprites.player:getWidth() / 2, sprites.player:getHeight() / 2)
+
+    for _, zombie in ipairs(zombies) do
+        love.graphics.draw(sprites.zombie, zombie.x, zombie.y)
+    end
 end
 
 function playerMouseAngle()
     return math.atan2(love.mouse.getY() - player.y, love.mouse.getX() - player.x)
+end
+
+function spawnZombie()
+    local zombie = {}
+    zombie.x = math.random(0, love.graphics.getWidth())
+    zombie.y = math.random(0, love.graphics.getHeight())
+    zombie.speed = 100
+    table.insert(zombies, zombie)
 end
