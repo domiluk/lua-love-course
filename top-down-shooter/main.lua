@@ -8,9 +8,28 @@ function love.load()
     player = {}
     player.x = love.graphics.getWidth() / 2
     player.y = love.graphics.getHeight() / 2
+    player.speed = 180
+end
+
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit()
+    end
 end
 
 function love.update(dt)
+    if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
+        player.y = player.y - player.speed * dt
+    end
+    if love.keyboard.isDown("s") or love.keyboard.isDown("down") then
+        player.y = player.y + player.speed * dt
+    end
+    if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
+        player.x = player.x - player.speed * dt
+    end
+    if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
+        player.x = player.x + player.speed * dt
+    end
 end
 
 function love.draw()
