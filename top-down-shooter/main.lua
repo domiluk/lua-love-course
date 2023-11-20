@@ -38,6 +38,9 @@ function love.update(dt)
     for _, zombie in ipairs(zombies) do
         zombie.x = zombie.x + math.cos(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
         zombie.y = zombie.y + math.sin(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
+        if zombieTouchesThePlayer(zombie) then
+            zombies = {}
+        end
     end
 end
 
@@ -67,4 +70,12 @@ function spawnZombie()
     zombie.y = math.random(0, love.graphics.getHeight())
     zombie.speed = 100
     table.insert(zombies, zombie)
+end
+
+function distanceBetween(x1, y1, x2, y2)
+    return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
+end
+
+function zombieTouchesThePlayer(zombie)
+    return distanceBetween(zombie.x, zombie.y, player.x, player.y) < 30
 end

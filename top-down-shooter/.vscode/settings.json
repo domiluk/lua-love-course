@@ -6,6 +6,8 @@
         "playerFacingMouseAngle",
         "zombies",
         "spawnZombie",
-        "zombieFacingPlayerAngle"
+        "zombieFacingPlayerAngle",
+        "distanceBetween",
+        "zombieTouchesThePlayer"
     ]
 }
