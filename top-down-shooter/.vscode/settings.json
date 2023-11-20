@@ -10,6 +10,9 @@
         "distanceBetween",
         "zombieTouchesThePlayer",
         "bullets",
-        "spawnBullet"
+        "spawnBullet",
+        "gameState",
+        "timer",
+        "maxTime"
     ]
 }

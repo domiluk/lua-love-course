@@ -14,6 +14,10 @@ function love.load()
 
     zombies = {}
     bullets = {}
+
+    gameState = 2
+    maxTime = 2
+    timer = maxTime
 end
 
 function love.keypressed(key)
@@ -49,6 +53,7 @@ function love.update(dt)
         zombie.y = zombie.y + math.sin(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
         if zombieTouchesThePlayer(zombie) then
             zombies = {}
+            gameState = 1
         end
     end
 
@@ -80,6 +85,15 @@ function love.update(dt)
             table.remove(bullets, i)
         end
     end
+
+    if gameState == 2 then
+        timer = timer - dt
+        if timer <= 0 then
+            spawnZombie()
+            maxTime = 0.95 * maxTime
+            timer = maxTime
+        end
+    end
 end
 
 function love.draw()
@@ -109,10 +123,24 @@ end
 
 function spawnZombie()
     local zombie = {}
-    zombie.x = math.random(0, love.graphics.getWidth())
-    zombie.y = math.random(0, love.graphics.getHeight())
     zombie.speed = 100
     zombie.dead = false
+
+    local side = math.random(1, 4)
+    if side == 1 then -- left side
+        zombie.x = -30
+        zombie.y = math.random(0, love.graphics.getHeight())
+    elseif side == 2 then -- right side
+        zombie.x = love.graphics.getWidth() + 30
+        zombie.y = math.random(0, love.graphics.getHeight())
+    elseif side == 3 then -- top side
+        zombie.x = math.random(0, love.graphics.getWidth())
+        zombie.y = -30
+    elseif side == 4 then -- bottom side
+        zombie.x = math.random(0, love.graphics.getWidth())
+        zombie.y = love.graphics.getHeight() + 30
+    end
+
     table.insert(zombies, zombie)
 end
 
