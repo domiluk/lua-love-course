@@ -8,6 +8,8 @@
         "spawnZombie",
         "zombieFacingPlayerAngle",
         "distanceBetween",
-        "zombieTouchesThePlayer"
+        "zombieTouchesThePlayer",
+        "bullets",
+        "spawnBullet"
     ]
 }
