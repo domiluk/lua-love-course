@@ -11,11 +11,12 @@
         "bullets",
         "spawnBullet",
         "gameState",
-        "timer",
-        "maxTime",
+        "zombieSpawnTimer",
+        "timeBetweenZombieSpawns",
         "zombieTouchedThePlayer",
         "bulletHitAZombie",
         "font",
-        "score"
+        "score",
+        "removeDead"
     ]
 }
