@@ -35,6 +35,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.update(dt)
+    -- player movement
     if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
         player.y = player.y - player.speed * dt
     end
@@ -48,30 +49,33 @@ function love.update(dt)
         player.x = player.x + player.speed * dt
     end
 
+    -- move zombies
     for _, zombie in ipairs(zombies) do
         zombie.x = zombie.x + math.cos(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
         zombie.y = zombie.y + math.sin(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
-        if zombieTouchesThePlayer(zombie) then
+        if zombieTouchedThePlayer(zombie) then
             zombies = {}
             gameState = 1
         end
     end
 
+    -- move bullets
     for _, bullet in ipairs(bullets) do
         bullet.x = bullet.x + math.cos(bullet.direction) * bullet.speed * dt
         bullet.y = bullet.y + math.sin(bullet.direction) * bullet.speed * dt
     end
 
+    -- bullet-zombie collision detection
     for _, zombie in ipairs(zombies) do
         for _, bullet in ipairs(bullets) do
-            if distanceBetween(zombie.x, zombie.y, bullet.x, bullet.y) < 20 then
-                -- bullet hit a zombie
+            if bulletHitAZombie(bullet, zombie) then
                 zombie.dead = true
                 bullet.dead = true
             end
         end
     end
 
+    -- remove dead zombies
     for i = #zombies, 1, -1 do
         local zombie = zombies[i]
         if zombie.dead then
@@ -79,6 +83,7 @@ function love.update(dt)
         end
     end
 
+    -- remove dead bullets
     for i = #bullets, 1, -1 do
         local bullet = bullets[i]
         if bullet.dead or bullet.x < 0 or bullet.y < 0 or bullet.x > love.graphics.getWidth() or bullet.y > love.graphics.getHeight() then
@@ -86,6 +91,7 @@ function love.update(dt)
         end
     end
 
+    -- update spawn timer
     if gameState == 2 then
         timer = timer - dt
         if timer <= 0 then
@@ -158,6 +164,10 @@ function distanceBetween(x1, y1, x2, y2)
     return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
 end
 
-function zombieTouchesThePlayer(zombie)
+function zombieTouchedThePlayer(zombie)
     return distanceBetween(zombie.x, zombie.y, player.x, player.y) < 30
+end
+
+function bulletHitAZombie(bullet, zombie)
+    return distanceBetween(zombie.x, zombie.y, bullet.x, bullet.y) < 20
 end
