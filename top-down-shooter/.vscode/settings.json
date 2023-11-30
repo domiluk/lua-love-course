@@ -1,0 +1,22 @@
+{
+    "Lua.diagnostics.globals": [
+        "love",
+        "sprites",
+        "player",
+        "playerFacingMouseAngle",
+        "zombies",
+        "spawnZombie",
+        "zombieFacingPlayerAngle",
+        "distanceBetween",
+        "bullets",
+        "spawnBullet",
+        "gameState",
+        "zombieSpawnTimer",
+        "timeBetweenZombieSpawns",
+        "zombieTouchedThePlayer",
+        "bulletHitAZombie",
+        "font",
+        "score",
+        "removeDead"
+    ]
+}
