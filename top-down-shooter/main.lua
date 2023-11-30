@@ -16,6 +16,7 @@ function love.load()
     player.x = love.graphics.getWidth() / 2
     player.y = love.graphics.getHeight() / 2
     player.speed = 180
+    player.injured = false
 
     font = love.graphics.newFont(30)
     love.graphics.setFont(font)
@@ -51,17 +52,21 @@ end
 function love.update(dt)
     if gameState == IN_GAME then
         -- player movement
+        local speed = player.speed
+        if player.injured then
+            speed = speed * 1.5
+        end
         if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
-            player.y = math.max(0, player.y - player.speed * dt)
+            player.y = math.max(0, player.y - speed * dt)
         end
         if love.keyboard.isDown("s") or love.keyboard.isDown("down") then
-            player.y = math.min(love.graphics.getHeight(), player.y + player.speed * dt)
+            player.y = math.min(love.graphics.getHeight(), player.y + speed * dt)
         end
         if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
-            player.x = math.max(0, player.x - player.speed * dt)
+            player.x = math.max(0, player.x - speed * dt)
         end
         if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
-            player.x = math.min(love.graphics.getWidth(), player.x + player.speed * dt)
+            player.x = math.min(love.graphics.getWidth(), player.x + speed * dt)
         end
 
         -- move zombies
@@ -70,11 +75,17 @@ function love.update(dt)
             zombie.y = zombie.y + math.sin(zombieFacingPlayerAngle(zombie)) * zombie.speed * dt
             -- collision detection with the player
             if zombieTouchedThePlayer(zombie) then
-                zombies = {}
-                bullets = {}
-                gameState = MAIN_MENU
-                player.x = love.graphics.getWidth() / 2
-                player.y = love.graphics.getHeight() / 2
+                if player.injured then
+                    zombies = {}
+                    bullets = {}
+                    gameState = MAIN_MENU
+                    player.x = love.graphics.getWidth() / 2
+                    player.y = love.graphics.getHeight() / 2
+                    player.injured = false
+                else
+                    player.injured = true
+                    zombie.dead = true
+                end
             end
         end
 
@@ -113,19 +124,29 @@ end
 function love.draw()
     love.graphics.draw(sprites.background, 0, 0)
 
+    -- menu
     if gameState == MAIN_MENU then
         love.graphics.printf("Click anywhere to begin!", 0, 50, love.graphics.getWidth(), "center")
     end
+
+    -- score
     love.graphics.printf("Score: " .. score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
+
+    -- player
+    if player.injured then love.graphics.setColor(1, 0, 0) end
 
     love.graphics.draw(sprites.player, player.x, player.y, playerFacingMouseAngle(), nil, nil,
         sprites.player:getWidth() / 2, sprites.player:getHeight() / 2)
 
+    if player.injured then love.graphics.setColor(1, 1, 1) end
+
+    -- zombies
     for _, zombie in ipairs(zombies) do
         love.graphics.draw(sprites.zombie, zombie.x, zombie.y, zombieFacingPlayerAngle(zombie), nil, nil,
             sprites.zombie:getWidth() / 2, sprites.zombie:getHeight() / 2)
     end
 
+    -- bullets
     for _, bullet in ipairs(bullets) do
         love.graphics.draw(sprites.bullet, bullet.x, bullet.y, nil, 0.5, nil,
             sprites.bullet:getWidth() / 2, sprites.bullet:getHeight() / 2)
